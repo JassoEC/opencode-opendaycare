@@ -1,6 +1,6 @@
 # SPEC 01 — Feed como home (/) , idéntico al template y responsive
 
-> **Status:** Draft
+> **Status:** Approved
 > **Depends on:** Ninguno (primer spec del proyecto)
 > **Date:** 2026-09-21
 > **Objective:** Implementar la plantilla `references/pantallas/feed.dc.html` como página home (`/`), visualmente idéntica en desktop y adaptada a móvil con top bar + bottom nav, sin auth ni base de datos.
