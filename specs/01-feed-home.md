@@ -1,6 +1,6 @@
 # SPEC 01 — Feed como home (/) , idéntico al template y responsive
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** Ninguno (primer spec del proyecto)
 > **Date:** 2026-09-21
 > **Objective:** Implementar la plantilla `references/pantallas/feed.dc.html` como página home (`/`), visualmente idéntica en desktop y adaptada a móvil con top bar + bottom nav, sin auth ni base de datos.
@@ -100,15 +100,15 @@ Convenciones: identificadores (variables, funciones, tipos, props, archivos) sie
 
 ## Acceptance criteria
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] En ≥1024px, `/` es idéntico al template: sidebar 248px con Feed activo (`#FBE3D8`/`#D9583C`), botón gradiente "Nueva publicación", user card "Caro Giménez · Maestra · Soles" con logout; "Buenas, Caro", "12 niños · martes 17 jun", composer, divisor "PUBLICADO HOY" y los 3 posts con badges y contadores 3/1, 5/2 (con foto placeholder), 8/0.
-- [ ] Fredoka y Nunito cargan vía `next/font` (self-hosted, sin `<link>` a Google Fonts en el HTML).
-- [ ] Todos los links usan `next/link` con el mapeo de rutas de la sección de datos.
-- [ ] En <1024px: sin sidebar; top bar sticky con marca y avatar → `/mi-cuenta`; bottom nav fija con Feed activo, Niños, "+" central (→ `/crear-publicacion`), Avisos, Mi cuenta; el contenido no queda tapado por la bottom nav.
-- [ ] La página es 100% server component (sin `"use client"`).
-- [ ] `app/globals.css` no tiene `prefers-color-scheme` ni referencias a Geist.
-- [ ] Screenshots desktop y móvil guardados en `.playwright-mcp/` comparados contra el template.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] En ≥1024px, `/` es idéntico al template: sidebar 248px con Feed activo (`#FBE3D8`/`#D9583C`), botón gradiente "Nueva publicación", user card "Caro Giménez · Maestra · Soles" con logout; "Buenas, Caro", "12 niños · martes 17 jun", composer, divisor "PUBLICADO HOY" y los 3 posts con badges y contadores 3/1, 5/2 (con foto placeholder), 8/0.
+- [x] Fredoka y Nunito cargan vía `next/font` (self-hosted, sin `<link>` a Google Fonts en el HTML).
+- [x] Todos los links usan `next/link` con el mapeo de rutas de la sección de datos.
+- [x] En <1024px: sin sidebar; top bar sticky con marca y avatar → `/mi-cuenta`; bottom nav fija con Feed activo, Niños, "+" central (→ `/crear-publicacion`), Avisos, Mi cuenta; el contenido no queda tapado por la bottom nav.
+- [x] La página es 100% server component (sin `"use client"`).
+- [x] `app/globals.css` no tiene `prefers-color-scheme` ni referencias a Geist.
+- [x] Screenshots desktop y móvil guardados en `.playwright-mcp/` comparados contra el template.
 
 ## Decisions
 
@@ -147,3 +147,34 @@ Convenciones: identificadores (variables, funciones, tipos, props, archivos) sie
 - Dark mode.
 
 Cada una de esas, si llega, va en su propio spec.
+
+## Verification report
+
+**Fecha:** 2026-09-21 · **Branch:** `spec-01-feed-home` · **Spec:** 01-feed-home
+
+### Tabla de criterios
+
+| Criterio | Resultado | Evidencia |
+|---|---|---|
+| `npm run lint` pasa sin errores | **PASS** | `npx eslint "app/**/*.{ts,tsx}" "components/**/*.{ts,tsx}" "lib/**/*.{ts,tsx}"` → "No issues found" |
+| `npm run build` compila sin errores | **PASS** | `npm run build` → "✓ Compiled successfully", TypeScript en 1372ms, 4/4 páginas estáticas generadas |
+| Desktop ≥1024px idéntico al template | **PASS** | Screenshot `.playwright-mcp/spec-01-desktop-1440x900.png` + snapshot. Sidebar 248px confirmado (`getBoundingClientRect().width`). Feed activo: bg `rgb(251,227,216)`=`#FBE3D8`, texto `rgb(217,88,60)`=`#D9583C`. "Nueva publicación" texto blanco `rgb(255,255,255)`. Badges: LOGRO `#CFEBD8`/`#3E9B6C`, ACTIVIDAD `#C7E7F1`/`#2E89A6`, ANUNCIO `#CCD8F4`/`#4E72C8`. Contadores: 3/1, 5/2 (con foto), 8/0. Todos los textos verificados en accessibility snapshot. |
+| Fredoka y Nunito self-hosted | **PASS** | `evaluate`: 0 links a `fonts.googleapis.com`. `getComputedStyle(h1).fontFamily` → `"Fredoka, \"Fredoka Fallback\""` (font-weight 600). `getComputedStyle(body).fontFamily` → `"Nunito, \"Nunito Fallback\", system-ui, sans-serif"`. Fuentes cargadas vía `next/font/google` en `app/layout.tsx`. |
+| Todos los links usan `next/link` | **PASS** | 7 archivos importan `Link from "next/link"`: `Sidebar.tsx`, `SidebarLink.tsx`, `TopBar.tsx`, `BottomNav.tsx`, `ComposerTrigger.tsx`, `PostActions.tsx`, `PhotoPlaceholder.tsx`. Rutas verificadas en snapshot: `/`, `/ninos`, `/avisos`, `/mi-cuenta`, `/crear-publicacion`, `/detalle-publicacion`, `/foto`, `/login`. |
+| Móvil <1024px: top bar + bottom nav | **PASS** | Screenshot `.playwright-mcp/spec-01-mobile-390x844.png` + snapshot a 390×844. Sin sidebar (`aside` oculto vía `hidden lg:flex`). Top bar sticky con logo→`/` y avatar→`/mi-cuenta`. Bottom nav fija con Feed activo, Niños, "+"→`/crear-publicacion`, Avisos, Mi cuenta. Contenido no tapado (`pb-28`). |
+| 100% server component | **PASS** | `grep -r "use client" app/ components/` → 0 resultados. Solo aparece en el propio spec. |
+| `globals.css` sin dark mode ni Geist | **PASS** | `grep -E "prefers-color-scheme|Geist|geist" app/globals.css` → 0 resultados. |
+| Screenshots en `.playwright-mcp/` | **PASS** | `.playwright-mcp/spec-01-desktop-1440x900.png` (89.8K) y `.playwright-mcp/spec-01-mobile-390x844.png` (66.6K). |
+
+### Arreglos menores aplicados durante la verificación
+
+1. **CSS cascade bug en `app/globals.css`** — La regla `a { color: inherit; text-decoration: none; }` estaba sin capa CSS (unlayered), lo que en Tailwind v4 tiene mayor prioridad que las utilidades en `@layer utilities`. Esto causaba que **todos** los `<a>` con clases de color Tailwind (`text-brand`, `text-white`, `text-brand-dark`) renderizaran con el color heredado (`#3F362E`) en lugar del color especificado.
+   - **Fix:** Envuelta la regla en `@layer base { a { ... } }` para que las utilidades de Tailwind puedan sobrescribirla.
+   - **Impacto:** El link "Feed" activo ahora muestra `#D9583C` (antes `#3F362E`), "Nueva publicación" ahora blanco (antes `#3F362E`), "Editar" ahora `#C5503A` (antes `#3F362E`).
+
+2. **Typo en token de color** — `--color-achievement-bg` era `#cfe8d8` en vez de `#cfebd8` (canal verde: `E8` en vez de `EB`). El template y el spec especifican `#CFEBD8`.
+   - **Fix:** Corregido a `#cfebd8` en `app/globals.css` línea 25.
+
+### Desviaciones del scope
+
+- Ninguna. La implementación coincide con el scope definido.
