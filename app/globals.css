@@ -22,7 +22,7 @@
   --color-brand-avatar: #f2937a;
   --color-placeholder-inner: #f4ece1;
   --color-placeholder-ink: #b0a290;
-  --color-achievement-bg: #cfe8d8;
+  --color-achievement-bg: #cfebd8;
   --color-achievement-ink: #3e9b6c;
   --color-activity-bg: #c7e7f1;
   --color-activity-ink: #2e89a6;
@@ -50,9 +50,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+@layer base {
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 
 ::-webkit-scrollbar {
