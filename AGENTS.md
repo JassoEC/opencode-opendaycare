@@ -39,3 +39,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - /spec usaremos esta skill para crear las especificaciones
 - /spec-impl usaremos esta skill para realizar las implementaciones
+
+
+## Reglas de codificacion
+- Usa clean code de forma estricta, lo que significa que los nombres de variables, funciones, tipos, etc, deben estar en ingles
