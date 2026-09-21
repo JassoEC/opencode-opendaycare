@@ -37,7 +37,13 @@ Es la primera pantalla de la app y establece la base que las otras 15 pantallas 
 `lib/feed-data.ts`:
 
 ```ts
-export type PostType = "logro" | "actividad" | "anuncio";
+export type PostType = "achievement" | "activity" | "announcement";
+
+export const postTypeLabels: Record<PostType, string> = {
+  achievement: "Logro",
+  activity: "Actividad",
+  announcement: "Anuncio",
+};
 
 export type AvatarSpec =
   | { kind: "initial"; initial: string; bg: string; fg: string }
@@ -58,9 +64,9 @@ export interface Post {
 }
 
 export const currentUser = { name: "Caro Giménez", role: "Maestra · Soles", initial: "C" };
-export const sala = { name: "Soles", childrenCount: 12, fecha: "martes 17 jun" };
+export const classroom = { name: "Soles", childrenCount: 12, date: "martes 17 jun" };
 export const posts: Post[] = [
-  // logro 14:20 · 3♥ 1💬 (orinal) · actividad 09:40 · 5♥ 2💬 (témperas, foto) · anuncio 07:50 · 8♥ 0💬 (parque)
+  // achievement 14:20 · 3♥ 1💬 (orinal) · activity 09:40 · 5♥ 2💬 (témperas, foto) · announcement 07:50 · 8♥ 0💬 (parque)
 ];
 ```
 
@@ -77,15 +83,15 @@ Mapeo de rutas (template → app):
 | `foto.dc.html` | `/foto` |
 | `login.dc.html` | `/login` |
 
-Convenciones: textos y fecha hardcodeados tal cual el template (no dinámicos). Badges: logro `#CFEBD8`/`#3E9B6C`, actividad `#C7E7F1`/`#2E89A6`, anuncio `#CCD8F4`/`#4E72C8`.
+Convenciones: identificadores (variables, funciones, tipos, props, archivos) siempre en inglés — regla de AGENTS.md; los textos de UI y valores de datos hardcodeados ("Soles", "martes 17 jun", "Mateo") quedan en español. Rutas en español (`/ninos`, `/mi-cuenta`, `/crear-publicacion`, ...): son URLs user-facing de un producto en español y decisión de producto, no identificadores de código cubiertos por la regla de AGENTS.md. Textos y fecha hardcodeados tal cual el template (no dinámicos). Badges (label vía `postTypeLabels` + color): achievement `#CFEBD8`/`#3E9B6C`, activity `#C7E7F1`/`#2E89A6`, announcement `#CCD8F4`/`#4E72C8`.
 
 ## Implementation plan
 
 1. **Tokens y base CSS** — `app/globals.css`: paleta en `@theme inline` (bg `#F6ECDF`, surface `#FFFDF9`, bordes `#ECE0D0`/`#E7DAC8`/`#F0E6D8`, textos `#3F362E`/`#4A4038`/`#94887B`/`#A89A8B`, marca `#D9583C`/`#E0654A`/`#C5503A`, nav activo `#FBE3D8`, badges), fuentes (`--font-display`→Fredoka, `--font-sans`→Nunito); eliminar dark mode y vars de Geist; body y scrollbar webkit base. Manual: `npm run dev` carga sin errores.
 2. **Layout root** — `app/layout.tsx`: Fredoka + Nunito con `next/font/google` (subsets latin, variables `--font-fredoka`/`--font-nunito`), `lang="es"`, metadata "OpenDayCare"; quitar Geist. Manual: título de pestaña "OpenDayCare".
-3. **Datos** — `lib/feed-data.ts` con tipos y datos de arriba. Manual: `npm run lint` pasa.
+3. **Datos** — `lib/feed-data.ts` con tipos, `postTypeLabels` y datos de arriba. Manual: `npm run lint` pasa.
 4. **Íconos** — `components/shared/icons.tsx`: SVGs del template como componentes (SunLogo, Plus, Home, Kids, Bell, User, LogOut, Camera, Heart, MessageCircle, ImageIcon, Megaphone). Manual: compila.
-5. **Atómicos** — `components/shared/Avatar.tsx` (AvatarSpec + tamaño) y en `components/feed/`: `PostBadge.tsx`, `PhotoPlaceholder.tsx`, `PostActions.tsx`. Manual: compila.
+5. **Atómicos** — `components/shared/Avatar.tsx` (AvatarSpec + tamaño) y en `components/feed/`: `PostBadge.tsx` (label vía `postTypeLabels` + color por tipo), `PhotoPlaceholder.tsx`, `PostActions.tsx`. Manual: compila.
 6. **PostCard** — `components/feed/PostCard.tsx`: header (avatar + nombre + hora + badge), "Para: …", body, `PhotoPlaceholder` condicional, `PostActions`. Manual: compila.
 7. **Composer** — `components/feed/ComposerTrigger.tsx`: caja "Compartí un momento…" como `Link` → `/crear-publicacion`. Manual: compila.
 8. **Nav desktop** — `components/shared/navigation/SidebarLink.tsx` (estado activo) y `Sidebar.tsx` (marca, botón gradiente "Nueva publicación", nav, user card con logout). Visible solo ≥lg. Manual: 1440×900 muestra el sidebar.
