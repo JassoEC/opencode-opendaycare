@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #f6ecdf;
+  --color-surface: #fffdf9;
+  --color-ink: #3f362e;
+  --color-ink-body: #4a4038;
+  --color-ink-muted: #94887b;
+  --color-ink-subtle: #a89a8b;
+  --color-ink-nav: #6e6359;
+  --color-ink-section: #8a7c6d;
+  --color-border: #ece0d0;
+  --color-border-soft: #e7dac8;
+  --color-border-divider: #f0e6d8;
+  --color-border-dashed: #dbcdba;
+  --color-brand: #d9583c;
+  --color-brand-light: #e0654a;
+  --color-brand-dark: #c5503a;
+  --color-brand-active: #fbe3d8;
+  --color-brand-gradient-from: #f4977e;
+  --color-brand-gradient-to: #ee8164;
+  --color-brand-avatar: #f2937a;
+  --color-placeholder-inner: #f4ece1;
+  --color-placeholder-ink: #b0a290;
+  --color-achievement-bg: #cfe8d8;
+  --color-achievement-ink: #3e9b6c;
+  --color-activity-bg: #c7e7f1;
+  --color-activity-ink: #2e89a6;
+  --color-announcement-bg: #ccd8f4;
+  --color-announcement-ink: #4e72c8;
+  --color-scrollbar-thumb: #e4d6c4;
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-fredoka);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-ink);
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
 }
