@@ -10,7 +10,7 @@ export default function HomePage() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar />
+      <Sidebar active="feed" />
       <main className="h-screen min-w-0 flex-1 overflow-y-auto">
         <TopBar />
         <div className="mx-auto w-full max-w-[760px] px-4 pt-[34px] pb-28 lg:px-10 lg:pb-20">
@@ -42,7 +42,7 @@ export default function HomePage() {
           </div>
         </div>
       </main>
-      <BottomNav />
+      <BottomNav active="feed" />
     </div>
   );
 }

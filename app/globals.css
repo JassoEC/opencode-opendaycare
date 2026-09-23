@@ -28,6 +28,16 @@
   --color-activity-ink: #2e89a6;
   --color-announcement-bg: #ccd8f4;
   --color-announcement-ink: #4e72c8;
+  --color-pending-bg: #f7e7a6;
+  --color-pending-ink: #9a7b1e;
+  --color-link-bg: #f9d2de;
+  --color-link-ink: #c56486;
+  --color-allergy-bg: #fbd8cc;
+  --color-allergy-ink: #d9684a;
+  --color-alert-bg: #fbdad6;
+  --color-alert-icon-bg: #f4a8a0;
+  --color-alert-title: #c5413a;
+  --color-alert-body: #b25249;
   --color-scrollbar-thumb: #e4d6c4;
   --font-sans: var(--font-nunito);
   --font-display: var(--font-fredoka);
@@ -47,7 +57,12 @@ body {
   background: var(--color-background);
   color: var(--color-ink);
   font-family: var(--font-nunito), system-ui, sans-serif;
+  line-height: normal;
   -webkit-font-smoothing: antialiased;
+}
+
+input {
+  padding: 1px 2px;
 }
 
 @layer base {

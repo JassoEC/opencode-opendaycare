@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Bell, Home, Kids, Plus, User } from "@/components/shared/icons";
+import type { NavItem } from "@/components/shared/navigation/nav-item";
 
 interface BottomNavLinkProps {
   href: string;
@@ -23,11 +24,15 @@ function BottomNavLink({ href, label, icon, active = false }: BottomNavLinkProps
   );
 }
 
-export function BottomNav() {
+interface BottomNavProps {
+  active: NavItem;
+}
+
+export function BottomNav({ active }: BottomNavProps) {
   return (
     <nav className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-border bg-surface px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] lg:hidden">
-      <BottomNavLink href="/" label="Feed" icon={<Home size={22} />} active />
-      <BottomNavLink href="/children" label="Niños" icon={<Kids size={22} />} />
+      <BottomNavLink href="/" label="Feed" icon={<Home size={22} />} active={active === "feed"} />
+      <BottomNavLink href="/children" label="Niños" icon={<Kids size={22} />} active={active === "children"} />
       <Link
         href="/posts/new"
         aria-label="Crear publicación"
@@ -39,8 +44,8 @@ export function BottomNav() {
       >
         <Plus size={24} />
       </Link>
-      <BottomNavLink href="/announcements" label="Avisos" icon={<Bell size={22} />} />
-      <BottomNavLink href="/account" label="Mi cuenta" icon={<User size={22} />} />
+      <BottomNavLink href="/announcements" label="Avisos" icon={<Bell size={22} />} active={active === "announcements"} />
+      <BottomNavLink href="/account" label="Mi cuenta" icon={<User size={22} />} active={active === "account"} />
     </nav>
   );
 }
