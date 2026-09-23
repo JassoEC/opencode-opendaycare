@@ -1,6 +1,5 @@
-import Link from "next/link";
+import { AddChildDialog } from "@/components/children/AddChildDialog";
 import { ChildrenBrowser } from "@/components/children/ChildrenBrowser";
-import { Plus } from "@/components/shared/icons";
 import { BottomNav } from "@/components/shared/navigation/BottomNav";
 import { Sidebar } from "@/components/shared/navigation/Sidebar";
 import { TopBar } from "@/components/shared/navigation/TopBar";
@@ -20,17 +19,7 @@ export default function ChildrenPage() {
               </div>
               <h1 className="font-display text-[30px] font-semibold text-ink">Niños</h1>
             </div>
-            <Link
-              href="/children/new"
-              className="flex items-center gap-2 rounded-[14px] px-[18px] py-[11px] text-[14.5px] font-extrabold text-white"
-              style={{
-                background: "linear-gradient(180deg,#F4977E,#EE8164)",
-                boxShadow: "0 8px 18px -8px rgba(238,129,100,.7)",
-              }}
-            >
-              <Plus />
-              Agregar niño
-            </Link>
+            <AddChildDialog />
           </div>
 
           <ChildrenBrowser kids={children} />
