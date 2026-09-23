@@ -27,9 +27,9 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 z-10 flex w-full items-center justify-around border-t border-border bg-surface px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] lg:hidden">
       <BottomNavLink href="/" label="Feed" icon={<Home size={22} />} active />
-      <BottomNavLink href="/ninos" label="Niños" icon={<Kids size={22} />} />
+      <BottomNavLink href="/children" label="Niños" icon={<Kids size={22} />} />
       <Link
-        href="/crear-publicacion"
+        href="/posts/new"
         aria-label="Crear publicación"
         className="-mt-6 flex h-12 w-12 items-center justify-center rounded-2xl text-white"
         style={{
@@ -39,8 +39,8 @@ export function BottomNav() {
       >
         <Plus size={24} />
       </Link>
-      <BottomNavLink href="/avisos" label="Avisos" icon={<Bell size={22} />} />
-      <BottomNavLink href="/mi-cuenta" label="Mi cuenta" icon={<User size={22} />} />
+      <BottomNavLink href="/announcements" label="Avisos" icon={<Bell size={22} />} />
+      <BottomNavLink href="/account" label="Mi cuenta" icon={<User size={22} />} />
     </nav>
   );
 }

@@ -13,7 +13,7 @@ export function ComposerTrigger() {
 
   return (
     <Link
-      href="/crear-publicacion"
+      href="/posts/new"
       className="mb-6 flex items-center gap-[14px] rounded-[18px] border border-border bg-surface px-[18px] py-[14px]"
       style={{ boxShadow: "0 4px 14px -10px rgba(120,90,60,.4)" }}
     >

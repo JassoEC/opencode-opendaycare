@@ -30,7 +30,7 @@ export function Sidebar() {
       </Link>
 
       <Link
-        href="/crear-publicacion"
+        href="/posts/new"
         className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] px-3 py-3 text-[14.5px] font-extrabold text-white"
         style={{
           background: "linear-gradient(180deg,#F4977E,#EE8164)",
@@ -43,9 +43,9 @@ export function Sidebar() {
 
       <nav className="flex flex-1 flex-col gap-1">
         <SidebarLink href="/" label="Feed" icon={<Home />} active />
-        <SidebarLink href="/ninos" label="Niños" icon={<Kids />} />
-        <SidebarLink href="/avisos" label="Avisos" icon={<Bell />} />
-        <SidebarLink href="/mi-cuenta" label="Mi cuenta" icon={<User />} />
+        <SidebarLink href="/children" label="Niños" icon={<Kids />} />
+        <SidebarLink href="/announcements" label="Avisos" icon={<Bell />} />
+        <SidebarLink href="/account" label="Mi cuenta" icon={<User />} />
       </nav>
 
       <div className="mt-2.5 border-t border-border pt-[14px]">
