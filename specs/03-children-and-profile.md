@@ -1,6 +1,6 @@
 # SPEC 03 — Listado y perfil de niños (/children y /children/[childId])
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 01, SPEC 02
 > **Date:** 2026-09-22
 > **Objective:** Implementar el listado de niños (`ninos.dc.html` → `/children`) y el perfil dinámico (`perfil-nino.dc.html` → `/children/[childId]`) con nav activo por página, datos tipados para los 8 niños y buscador funcional client-side.
@@ -96,15 +96,15 @@ Reglas derivadas:
 
 ## Acceptance criteria
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] En ≥1024px, `/children` es idéntico a `ninos.dc.html`: "GESTIÓN / Niños", botón "Agregar niño" → `/children/new`, buscador, divisor "SALA SOLES · 8 niños", grilla 2 col con las 8 cards (avatares, edades y conteos de padres del template) y badges MANÍ (Mateo), LACTOSA (Tomás) y VINCULAR (Valentina).
-- [ ] En ≥1024px, `/children/mateo-fernandez` es idéntico a `perfil-nino.dc.html`: back link, avatar 84px, "Mateo Fernández · 3 años · Sala Soles", "Editar" → `/children/new`, card roja con el texto de alergias exacto, datos "12 mar 2022 / Soles / feb 2025", "Resumen del día" → `/children/mateo-fernandez/daily-summary`, padres Lucía (ACTIVA) y Diego (PENDIENTE), "Vincular otro padre" → `/children/mateo-fernandez/link-parent`.
-- [ ] Las 8 cards navegan a perfiles reales con datos completos; un id inexistente renderiza 404.
-- [ ] El buscador filtra en vivo por nombre (accent-insensitive: "sofia" → "Sofía") con empty state "Sin resultados"; `ChildrenBrowser` es la única pieza `"use client"` de la feature.
-- [ ] Sidebar y bottom nav muestran "Niños" activo en ambas páginas (`#FBE3D8`/`#D9583C`) y "Feed" activo en `/` sin regresión visual.
-- [ ] En <1024px: top bar + bottom nav con Niños activo, grilla de 1 columna, perfil apilado, contenido no tapado por la bottom nav.
-- [ ] Screenshots desktop y móvil de `/children`, `/children/mateo-fernandez` y `/` guardados en `.playwright-mcp/` y comparados contra los templates.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] En ≥1024px, `/children` es idéntico a `ninos.dc.html`: "GESTIÓN / Niños", botón "Agregar niño" → `/children/new`, buscador, divisor "SALA SOLES · 8 niños", grilla 2 col con las 8 cards (avatares, edades y conteos de padres del template) y badges MANÍ (Mateo), LACTOSA (Tomás) y VINCULAR (Valentina).
+- [x] En ≥1024px, `/children/mateo-fernandez` es idéntico a `perfil-nino.dc.html`: back link, avatar 84px, "Mateo Fernández · 3 años · Sala Soles", "Editar" → `/children/new`, card roja con el texto de alergias exacto, datos "12 mar 2022 / Soles / feb 2025", "Resumen del día" → `/children/mateo-fernandez/daily-summary`, padres Lucía (ACTIVA) y Diego (PENDIENTE), "Vincular otro padre" → `/children/mateo-fernandez/link-parent`.
+- [x] Las 8 cards navegan a perfiles reales con datos completos; un id inexistente renderiza 404.
+- [x] El buscador filtra en vivo por nombre (accent-insensitive: "sofia" → "Sofía") con empty state "Sin resultados"; `ChildrenBrowser` es la única pieza `"use client"` de la feature.
+- [x] Sidebar y bottom nav muestran "Niños" activo en ambas páginas (`#FBE3D8`/`#D9583C`) y "Feed" activo en `/` sin regresión visual.
+- [x] En <1024px: top bar + bottom nav con Niños activo, grilla de 1 columna, perfil apilado, contenido no tapado por la bottom nav.
+- [x] Screenshots desktop y móvil de `/children`, `/children/mateo-fernandez` y `/` guardados en `.playwright-mcp/` y comparados contra los templates.
 
 ## Decisions
 
@@ -139,3 +139,32 @@ Reglas derivadas:
 - Layout tablet, dark mode.
 
 Cada una de esas, si llega, va en su propio spec.
+
+## Verification report
+
+**Fecha:** 2026-09-23  
+**Branch:** `spec-03-children-and-profile`  
+**Spec verificado:** `specs/03-children-and-profile.md`
+
+### Tabla de criterios
+
+| # | Criterio | Resultado | Evidencia |
+|---|----------|-----------|-----------|
+| 1 | `npm run lint` pasa | **PASS** | Ejecutado: `npm run lint` → 0 errores. Sin output de ESLint. |
+| 2 | `npm run build` compila | **PASS** | Ejecutado: `npm run build` → `✓ Compiled successfully in 351ms`, TypeScript finished en 1428ms, 13 páginas generadas (incluyendo 8 rutas dinámicas via `generateStaticParams`). |
+| 3 | `/children` desktop ≥1024px pixel-perfect | **PASS** | Screenshot: `.playwright-mcp/spec-03-children-desktop-1440x900.png`. Snapshot: `.playwright-mcp/children-desktop-snapshot.txt`. Verificado: "GESTIÓN" eyebrow, h1 "Niños", botón "Agregar niño" → `/children/new`, buscador "Buscar niño…", divisor "SALA SOLES · 8 niños", grilla 2 col, 8 cards con avatares/edades/conteos correctos, badges MANÍ (Mateo), LACTOSA (Tomás), VINCULAR (Valentina). Comparado contra `references/pantallas/ninos.dc.html`. |
+| 4 | `/children/mateo-fernandez` desktop ≥1024px pixel-perfect | **PASS** | Screenshot: `.playwright-mcp/spec-03-mateo-profile-desktop-1440x900.png`. Snapshot: `.playwright-mcp/mateo-profile-desktop-snapshot.txt`. Verificado: back link "Volver a Niños" → `/children`, avatar 84px (M, #A9D9E8/#1F7A93), "Mateo Fernández · 3 años · Sala Soles", "Editar" → `/children/new`, card roja "Alergias y notas" con texto exacto "Alergia al maní. Evitar frutos secos. Lleva inhalador en la mochila.", datos "12 mar 2022 / Soles / feb 2025", "Resumen del día" → `/children/mateo-fernandez/daily-summary`, padres Lucía Fernández (ACTIVA) y Diego Fernández (PENDIENTE), "Vincular otro padre" → `/children/mateo-fernandez/link-parent`. Comparado contra `references/pantallas/perfil-nino.dc.html`. |
+| 5 | 8 cards navegan a perfiles reales; id inexistente → 404 | **PASS** | Programático: las 8 rutas `/children/{slug}` devuelven HTTP 200. `/children/inventado` → HTTP 404 con título "404: This page could not be found.". También verificado: `/children/valentina-soto` sin card de alergias (correcto), con card de padres vacía + link "Vincular otro padre"; `/children/tomas-diaz` con card roja de alergias presente. |
+| 6 | Buscador filtra accent-insensitive + empty state + único `"use client"` | **PASS** | Test: escribir "sofia" → solo queda card "Sofía Méndez" (NFD normalization). Escribir "xyz123" → "Sin resultados". Grep: solo `components/children/ChildrenBrowser.tsx` contiene `"use client"` en toda la feature. |
+| 7 | Nav activo: "Niños" en `/children` y perfil, "Feed" en `/` | **PASS** | Sidebar: `rgb(251,227,216)` = `#FBE3D8` + `rgb(217,88,60)` = `#D9583C` (extrabold 800). Bottom nav mobile: mismo color. Home page screenshot: `.playwright-mcp/spec-03-home-regression-desktop-1440x900.png` y `.playwright-mcp/spec-03-home-regression-mobile-390x844.png` muestran "Feed" activo sin cambios. |
+| 8 | Móvil <1024px: top bar + bottom nav, 1 col, perfil apilado, sin overlap | **PASS** | Screenshot: `.playwright-mcp/spec-03-children-mobile-390x844.png` (grilla 1 col), `.playwright-mcp/spec-03-mateo-profile-mobile-390x844.png` (perfil apilado). Contenido padding-bottom 112px > nav height 58px → no overlap. Bottom nav con "Niños" activo. |
+| 9 | Screenshots en `.playwright-mcp/` | **PASS** | Archivos: `spec-03-children-desktop-1440x900.png`, `spec-03-children-mobile-390x844.png`, `spec-03-mateo-profile-desktop-1440x900.png`, `spec-03-mateo-profile-mobile-390x844.png`, `spec-03-home-regression-desktop-1440x900.png`, `spec-03-home-regression-mobile-390x844.png`. Todos en `.playwright-mcp/`. |
+
+### Arreglos menores aplicados
+Ninguno. La implementación cumple todos los criterios sin desviaciones.
+
+### Notas adicionales
+- Patrón Next.js 16 `params` como Promise confirmado por doc oficial (`/vercel/next.js/v16.0.3`): `params: Promise<{ childId: string }>` + `await params` en `app/children/[childId]/page.tsx`.
+- Console errors son solo 404s de rutas out-of-scope (`/children/new`, `/announcements`, etc.) — comportamiento esperado, no errores de la app.
+- Tokens CSS en `app/globals.css`: todos los nuevos tokens presentes (pendiente, vincular, alergia, alerta).
+- Precedencia de badges verificada: VINCULAR (Valentina, 0 padres) > alergía (Mateo MANÍ, Tomás LACTOSA) > chevron (resto).
