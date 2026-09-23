@@ -24,7 +24,7 @@ export function TopBar() {
           OpenDayCare
         </span>
       </Link>
-      <Link href="/mi-cuenta">
+      <Link href="/account">
         <Avatar spec={userAvatar} size={38} />
       </Link>
     </header>

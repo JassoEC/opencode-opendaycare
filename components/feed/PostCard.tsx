@@ -25,7 +25,7 @@ export function PostCard({ post }: { post: Post }) {
       <div className="mb-2.5 text-[12.5px] text-ink-subtle">Para: {post.audience}</div>
       <p className="text-[15.5px] leading-[1.55] text-ink-body">{post.body}</p>
       {post.photo ? <PhotoPlaceholder caption={post.photo.caption} /> : null}
-      <PostActions hearts={post.hearts} comments={post.comments} />
+      <PostActions postId={post.id} hearts={post.hearts} comments={post.comments} />
     </article>
   );
 }
