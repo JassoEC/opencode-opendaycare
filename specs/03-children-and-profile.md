@@ -13,7 +13,7 @@ Es la segunda feature real de la app y activa el patrón que el SPEC 02 dejó pe
 
 **In:**
 
-- Página `/children` (`app/children/page.tsx`) que replica pixel-perfect `ninos.dc.html` en ≥1024px: eyebrow "GESTIÓN" + h1 "Niños", botón gradiente "Agregar niño" → `/children/new`, buscador en caja surface, divisor "SALA SOLES · 8 niños" (conteo derivado de `children.length`), grilla de 2 columnas con las 8 cards.
+- Página `/children` (`app/children/page.tsx`) que replica pixel-perfect `ninos.dc.html` en ≥1024px: eyebrow "GESTIÓN" + h1 "Niños", botón gradiente "Agregar niño" (abre el modal del SPEC 05, sin ruta propia), buscador en caja surface, divisor "SALA SOLES · 8 niños" (conteo derivado de `children.length`), grilla de 2 columnas con las 8 cards.
 - `components/children/ChildCard.tsx`: avatar con inicial y color del template, nombre, "X años · N padres vinculados", y a la derecha badge VINCULAR / badge de alergía (MANÍ, LACTOSA) / chevron según precedencia; hover border `#F2A78E` + `translateY(-2px)`; link → `/children/[childId]`.
 - `components/children/ChildrenBrowser.tsx` (`"use client"`, única pieza client): input "Buscar niño…" que filtra la grilla en vivo por nombre (case- y accent-insensitive: "sofia" encuentra a "Sofía") y empty state "Sin resultados" cuando no hay matches. Recibe `children` como props desde la página server.
 - Página `/children/[childId]` (`app/children/[childId]/page.tsx`) que replica pixel-perfect `perfil-nino.dc.html`: back link "Volver a Niños" → `/children`; encabezado (avatar 84px, nombre, "X años · Sala Soles", botón outline "Editar" → `/children/new`); card roja "Alergias y notas" (condicional a `allergyNotes`); card de datos (Fecha de nacimiento / Sala / Ingreso); columna derecha con botón oscuro "Resumen del día" → `/children/[childId]/daily-summary` y card "PADRES VINCULADOS" (padres con avatar, rol · estado, badge ACTIVA/PENDIENTE, dashed "Vincular otro padre" → `/children/[childId]/link-parent`). `notFound()` para ids desconocidos y `generateStaticParams` para los 8 slugs.
@@ -26,8 +26,8 @@ Es la segunda feature real de la app y activa el patrón que el SPEC 02 dejó pe
 
 **Out of scope (for future specs):**
 
-- `/children/new`, `/children/[childId]/daily-summary`, `/children/[childId]/link-parent` — 404 hasta sus specs.
-- Edición real del perfil (el botón "Editar" va a `/children/new` por fidelidad al template; la ruta de edición se define en el spec de alta/edición).
+- `/children/[childId]/daily-summary`, `/children/[childId]/link-parent` — 404 hasta sus specs.
+- Edición real del perfil (el botón "Editar" va a `/children/new` por fidelidad al template; la ruta sigue 404 hasta su spec de alta/edición, ver SPEC 05).
 - Unificar el conteo 12 vs 8 (fidelidad por pantalla; se resuelve con datos reales).
 - Auth, base de datos, persistencia y acciones reales sobre padres (vincular/desvincular).
 - Layout tablet, dark mode.
@@ -79,7 +79,7 @@ Reglas derivadas:
 - Precedencia del elemento derecho en la card del listado: `parents.length === 0` → badge VINCULAR (`#F9D2DE`/`#C56486`); si no, `allergyLabel` → badge de alergía (`#FBD8CC`/`#D9684A`); si no, chevron (`#CBB89F`).
 - Card roja del perfil solo si `allergyNotes` existe. Card de padres con solo el dashed "Vincular otro padre" si `parents` está vacío (caso Valentina).
 - Badges de estado: ACTIVA `#CFEBD8`/`#3E9B6C` (token achievement existente), PENDIENTE `#F7E7A6`/`#9A7B1E`.
-- Rutas según la tabla canónica del SPEC 02: `ninos.dc.html` → `/children`, `perfil-nino.dc.html` → `/children/[childId]`, `agregar-nino.dc.html` → `/children/new`, `resumen-dia.dc.html` → `/children/[childId]/daily-summary`, `vincular-padre.dc.html` → `/children/[childId]/link-parent`. Sin rutas nuevas.
+- Rutas según la tabla canónica del SPEC 02: `ninos.dc.html` → `/children`, `perfil-nino.dc.html` → `/children/[childId]`, `agregar-nino.dc.html` → modal en `/children` (sin ruta, ver SPEC 05), `resumen-dia.dc.html` → `/children/[childId]/daily-summary`, `vincular-padre.dc.html` → `/children/[childId]/link-parent`. Sin rutas nuevas.
 
 ## Implementation plan
 
@@ -98,7 +98,7 @@ Reglas derivadas:
 
 - [x] `npm run lint` pasa sin errores.
 - [x] `npm run build` compila sin errores.
-- [x] En ≥1024px, `/children` es idéntico a `ninos.dc.html`: "GESTIÓN / Niños", botón "Agregar niño" → `/children/new`, buscador, divisor "SALA SOLES · 8 niños", grilla 2 col con las 8 cards (avatares, edades y conteos de padres del template) y badges MANÍ (Mateo), LACTOSA (Tomás) y VINCULAR (Valentina).
+- [x] En ≥1024px, `/children` es idéntico a `ninos.dc.html`: "GESTIÓN / Niños", botón "Agregar niño" (hoy al modal del SPEC 05, en su momento apuntaba a `/children/new`), buscador, divisor "SALA SOLES · 8 niños", grilla 2 col con las 8 cards (avatares, edades y conteos de padres del template) y badges MANÍ (Mateo), LACTOSA (Tomás) y VINCULAR (Valentina).
 - [x] En ≥1024px, `/children/mateo-fernandez` es idéntico a `perfil-nino.dc.html`: back link, avatar 84px, "Mateo Fernández · 3 años · Sala Soles", "Editar" → `/children/new`, card roja con el texto de alergias exacto, datos "12 mar 2022 / Soles / feb 2025", "Resumen del día" → `/children/mateo-fernandez/daily-summary`, padres Lucía (ACTIVA) y Diego (PENDIENTE), "Vincular otro padre" → `/children/mateo-fernandez/link-parent`.
 - [x] Las 8 cards navegan a perfiles reales con datos completos; un id inexistente renderiza 404.
 - [x] El buscador filtra en vivo por nombre (accent-insensitive: "sofia" → "Sofía") con empty state "Sin resultados"; `ChildrenBrowser` es la única pieza `"use client"` de la feature.
@@ -113,7 +113,7 @@ Reglas derivadas:
 - **Sí:** datos completos para los 8 niños (inventados plausibles, coherentes con el listado). Toda card navega a un perfil real y el swap a datos reales queda preparado por el tipado.
 - **Sí:** fidelidad por pantalla en el conteo: feed "12 niños" (SPEC 01, ya verificado) y lista "8 niños" derivado de `children.length`. Inconsistencia conocida, documentada; se unifica cuando lleguen datos reales.
 - **No:** unificar a 8 o a 12. Desviaría una pantalla ya verificada o la grilla del template.
-- **Sí:** "Editar" → `/children/new` como el template. La ruta de edición real se decide en el spec de alta/edición.
+- **Sí:** "Editar" → `/children/new` como el template. El alta pasó a modal (SPEC 05); la edición con form pre-poblado será otro flujo (su propio spec).
 - **Sí:** buscador funcional client-side (decisión del usuario). El estado queda contenido en `ChildrenBrowser`, que recibe los datos como props; páginas y nav siguen siendo server.
 - **No:** input visual estático. El usuario prefirió filtro funcional.
 - **Sí:** precedencia de badge VINCULAR > alergía > chevron. Sin padres es el estado más crítico para la maestra.
@@ -132,7 +132,7 @@ Reglas derivadas:
 
 ## What is **not** in this spec
 
-- `/children/new`, `daily-summary` y `link-parent` (siguen 404).
+- `daily-summary` y `link-parent` (siguen 404). El alta no es ruta: es el modal del SPEC 05.
 - Edición real del perfil y acciones sobre padres.
 - Auth, base de datos, persistencia.
 - Unificación del conteo 12 vs 8.
