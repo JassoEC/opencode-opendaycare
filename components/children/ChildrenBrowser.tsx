@@ -7,7 +7,7 @@ import type { Child } from "@/lib/children-data";
 import { classroom } from "@/lib/feed-data";
 
 interface ChildrenBrowserProps {
-  children: Child[];
+  kids: Child[];
 }
 
 function normalizeText(value: string): string {
@@ -17,13 +17,11 @@ function normalizeText(value: string): string {
     .toLowerCase();
 }
 
-export function ChildrenBrowser({ children }: ChildrenBrowserProps) {
+export function ChildrenBrowser({ kids }: ChildrenBrowserProps) {
   const [query, setQuery] = useState("");
 
   const normalizedQuery = normalizeText(query);
-  const results = children.filter((child) =>
-    normalizeText(child.name).includes(normalizedQuery),
-  );
+  const results = kids.filter((child) => normalizeText(child.name).includes(normalizedQuery));
 
   return (
     <div>
@@ -41,7 +39,7 @@ export function ChildrenBrowser({ children }: ChildrenBrowserProps) {
         <span className="text-[12.5px] font-extrabold tracking-[0.8px] text-ink">
           SALA {classroom.name.toUpperCase()}
         </span>
-        <span className="text-[13px] text-ink-subtle">{children.length} niños</span>
+        <span className="text-[13px] text-ink-subtle">{kids.length} niños</span>
         <span className="h-px flex-1 bg-border-soft" />
       </div>
 
