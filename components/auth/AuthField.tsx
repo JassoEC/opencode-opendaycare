@@ -8,10 +8,11 @@ interface AuthFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 export function AuthField({
   label,
   variant = "text",
+  className,
   ...props
 }: AuthFieldProps) {
   return (
-    <div>
+    <div className={className}>
       <div className="mb-2 text-[12px] font-bold tracking-[0.7px] text-ink-muted">
         {label}
       </div>
