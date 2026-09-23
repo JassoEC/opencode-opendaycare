@@ -20,13 +20,13 @@ Es la primera pantalla de la app y establece la base que las otras 15 pantallas 
   - `components/shared/`: `icons.tsx` (set de SVGs), `Avatar.tsx`
   - `components/shared/navigation/`: `Sidebar.tsx`, `SidebarLink.tsx`, `TopBar.tsx`, `BottomNav.tsx`
   - `components/feed/`: `ComposerTrigger.tsx`, `PostCard.tsx`, `PostBadge.tsx`, `PostActions.tsx`, `PhotoPlaceholder.tsx`
-- Layout móvil <1024px: top bar sticky (marca + avatar → `/mi-cuenta`) y bottom nav fija de 5 ítems con botón "+" central destacado (gradiente naranja) → `/crear-publicacion`.
+- Layout móvil <1024px: top bar sticky (marca + avatar → `/account`) y bottom nav fija de 5 ítems con botón "+" central destacado (gradiente naranja) → `/posts/new`.
 - Links reales con `next/link` a rutas futuras según el mapeo de la sección de datos.
 - `app/layout.tsx`: fuentes Fredoka+Nunito, `lang="es"`, metadata "OpenDayCare".
 
 **Out of scope (for future specs):**
 
-- Las otras 15 pantallas (`/ninos`, `/avisos`, `/mi-cuenta`, `/crear-publicacion`, `/detalle-publicacion`, `/foto`, `/login`, etc.) — los links darán 404 hasta que existan.
+- Las otras 15 pantallas (`/children`, `/announcements`, `/account`, `/posts/new`, `/posts/[postId]`, `/photo`, `/login`, etc.) — los links darán 404 hasta que existan.
 - Autenticación, base de datos o cualquier persistencia.
 - Interactividad: likes, comentarios, crear/editar publicaciones, logout funcional.
 - Fotos reales en los posts (se mantiene el placeholder punteado del template).
@@ -75,15 +75,17 @@ Mapeo de rutas (template → app):
 | Template | Ruta |
 | --- | --- |
 | `index.dc.html`, `feed.dc.html` | `/` |
-| `ninos.dc.html` | `/ninos` |
-| `avisos.dc.html` | `/avisos` |
-| `mi-cuenta.dc.html` | `/mi-cuenta` |
-| `crear-publicacion.dc.html` | `/crear-publicacion` |
-| `detalle-publicacion.dc.html` | `/detalle-publicacion` |
-| `foto.dc.html` | `/foto` |
+| `ninos.dc.html` | `/children` |
+| `avisos.dc.html` | `/announcements` |
+| `mi-cuenta.dc.html` | `/account` |
+| `crear-publicacion.dc.html` | `/posts/new` |
+| `detalle-publicacion.dc.html` | `/posts/[postId]` |
+| `foto.dc.html` | `/photo` |
 | `login.dc.html` | `/login` |
 
-Convenciones: identificadores (variables, funciones, tipos, props, archivos) siempre en inglés — regla de AGENTS.md; los textos de UI y valores de datos hardcodeados ("Soles", "martes 17 jun", "Mateo") quedan en español. Rutas en español (`/ninos`, `/mi-cuenta`, `/crear-publicacion`, ...): son URLs user-facing de un producto en español y decisión de producto, no identificadores de código cubiertos por la regla de AGENTS.md. Textos y fecha hardcodeados tal cual el template (no dinámicos). Badges (label vía `postTypeLabels` + color): achievement `#CFEBD8`/`#3E9B6C`, activity `#C7E7F1`/`#2E89A6`, announcement `#CCD8F4`/`#4E72C8`.
+Tabla canónica completa de mapeo (todos los templates): ver SPEC 02 §Data model.
+
+Convenciones: identificadores (variables, funciones, tipos, props, archivos) siempre en inglés — regla de AGENTS.md; los textos de UI y valores de datos hardcodeados ("Soles", "martes 17 jun", "Mateo") quedan en español. URLs y segmentos de ruta en inglés (`/children`, `/account`, `/posts/new`, ...): son identificadores de infraestructura — reversión de la decisión original de rutas en español (2026-09-21, ver SPEC 02); el español vive en la capa user-facing (labels, contenido, datos) y los slugs derivados de datos (ids de niño tipo `mateo-fernandez`) quedan en español. Textos y fecha hardcodeados tal cual el template (no dinámicos). Badges (label vía `postTypeLabels` + color): achievement `#CFEBD8`/`#3E9B6C`, activity `#C7E7F1`/`#2E89A6`, announcement `#CCD8F4`/`#4E72C8`.
 
 ## Implementation plan
 
@@ -93,7 +95,7 @@ Convenciones: identificadores (variables, funciones, tipos, props, archivos) sie
 4. **Íconos** — `components/shared/icons.tsx`: SVGs del template como componentes (SunLogo, Plus, Home, Kids, Bell, User, LogOut, Camera, Heart, MessageCircle, ImageIcon, Megaphone). Manual: compila.
 5. **Atómicos** — `components/shared/Avatar.tsx` (AvatarSpec + tamaño) y en `components/feed/`: `PostBadge.tsx` (label vía `postTypeLabels` + color por tipo), `PhotoPlaceholder.tsx`, `PostActions.tsx`. Manual: compila.
 6. **PostCard** — `components/feed/PostCard.tsx`: header (avatar + nombre + hora + badge), "Para: …", body, `PhotoPlaceholder` condicional, `PostActions`. Manual: compila.
-7. **Composer** — `components/feed/ComposerTrigger.tsx`: caja "Compartí un momento…" como `Link` → `/crear-publicacion`. Manual: compila.
+7. **Composer** — `components/feed/ComposerTrigger.tsx`: caja "Compartí un momento…" como `Link` → `/posts/new`. Manual: compila.
 8. **Nav desktop** — `components/shared/navigation/SidebarLink.tsx` (estado activo) y `Sidebar.tsx` (marca, botón gradiente "Nueva publicación", nav, user card con logout). Visible solo ≥lg. Manual: 1440×900 muestra el sidebar.
 9. **Nav móvil** — `components/shared/navigation/TopBar.tsx` (sticky <lg) y `BottomNav.tsx` (fixed <lg: Feed activo, Niños, "+" central, Avisos, Mi cuenta; safe-area). Manual: 390×844 muestra ambas barras, sin sidebar.
 10. **Página** — `app/page.tsx`: shell flex (`Sidebar` | main con scroll propio) + header saludo, `ComposerTrigger`, divisor "PUBLICADO HOY", `posts.map` → `PostCard`; padding del contenedor reducido en móvil y padding inferior para despejar la bottom nav. Manual: `/` correcto en 1440×900 y 390×844.
@@ -105,7 +107,7 @@ Convenciones: identificadores (variables, funciones, tipos, props, archivos) sie
 - [x] En ≥1024px, `/` es idéntico al template: sidebar 248px con Feed activo (`#FBE3D8`/`#D9583C`), botón gradiente "Nueva publicación", user card "Caro Giménez · Maestra · Soles" con logout; "Buenas, Caro", "12 niños · martes 17 jun", composer, divisor "PUBLICADO HOY" y los 3 posts con badges y contadores 3/1, 5/2 (con foto placeholder), 8/0.
 - [x] Fredoka y Nunito cargan vía `next/font` (self-hosted, sin `<link>` a Google Fonts en el HTML).
 - [x] Todos los links usan `next/link` con el mapeo de rutas de la sección de datos.
-- [x] En <1024px: sin sidebar; top bar sticky con marca y avatar → `/mi-cuenta`; bottom nav fija con Feed activo, Niños, "+" central (→ `/crear-publicacion`), Avisos, Mi cuenta; el contenido no queda tapado por la bottom nav.
+- [x] En <1024px: sin sidebar; top bar sticky con marca y avatar → `/account`; bottom nav fija con Feed activo, Niños, "+" central (→ `/posts/new`), Avisos, Mi cuenta; el contenido no queda tapado por la bottom nav.
 - [x] La página es 100% server component (sin `"use client"`).
 - [x] `app/globals.css` no tiene `prefers-color-scheme` ni referencias a Geist.
 - [x] Screenshots desktop y móvil guardados en `.playwright-mcp/` comparados contra el template.
@@ -127,6 +129,7 @@ Convenciones: identificadores (variables, funciones, tipos, props, archivos) sie
 - **Sí:** eliminar dark mode. El diseño es paleta crema única.
 - **Sí:** fecha y textos hardcodeados ("martes 17 jun"). Dinamizar desvía del "idéntico" sin datos reales.
 - **No:** interactividad de likes/comentarios/logout. No hay auth ni backend; es maqueta navegable.
+- **Sí:** URLs en inglés (reversión de la decisión original, 2026-09-21, ver SPEC 02). Las URLs son identificadores de infraestructura; el español vive en la capa user-facing (labels, contenido, datos).
 
 ## Risks
 
