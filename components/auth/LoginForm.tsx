@@ -15,7 +15,7 @@ export function LoginForm() {
       <AuthField
         label="EMAIL"
         type="email"
-        value={loginDemo.email}
+        defaultValue={loginDemo.email}
         className="mb-[18px]"
       />
       <AuthField
