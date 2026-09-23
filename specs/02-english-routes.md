@@ -1,6 +1,6 @@
 # SPEC 02 — URLs en inglés: migración de links y actualización de docs
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-09-21
 > **Objective:** Migrar las URLs de la app de español a inglés (solo rutas; labels de UI y datos quedan en español) cambiando los hrefs existentes y revirtiendo la decisión de rutas en español del spec 01, antes de construir nuevas pantallas.
@@ -67,13 +67,13 @@ Convención: URLs y segmentos de ruta en inglés (identificadores de infraestruc
 
 ## Acceptance criteria
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] Los 13 hrefs apuntan a las rutas inglesas de la tabla canónica (verificado por grep y snapshot de `/`).
-- [ ] Grep de rutas españolas en `app/`, `components/` y `lib/` → 0 resultados.
-- [ ] `specs/01-feed-home.md` actualizado sin contradicciones (tabla, convención, scope, plan y criterios en inglés; nueva entrada en Decisions con la reversión; Verification report intacto).
-- [ ] `AGENTS.md` documenta la convención de URLs.
-- [ ] La home `/` no tiene ningún cambio visual (solo cambian los hrefs).
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] Los 13 hrefs apuntan a las rutas inglesas de la tabla canónica (verificado por grep y snapshot de `/`).
+- [x] Grep de rutas españolas en `app/`, `components/` y `lib/` → 0 resultados.
+- [x] `specs/01-feed-home.md` actualizado sin contradicciones (tabla, convención, scope, plan y criterios en inglés; nueva entrada en Decisions con la reversión; Verification report intacto).
+- [x] `AGENTS.md` documenta la convención de URLs.
+- [x] La home `/` no tiene ningún cambio visual (solo cambian los hrefs).
 
 ## Decisions
 
@@ -93,4 +93,24 @@ Convención: URLs y segmentos de ruta en inglés (identificadores de infraestruc
 
 ## Verification report
 
-*(se completa tras la implementación)*
+**Fecha:** 2026-09-22 · **Branch:** `spec-02-english-routes` · **Spec:** 02-english-routes
+
+### Tabla de criterios
+
+| Criterio | Resultado | Evidencia |
+|---|---|---|
+| `npm run lint` pasa sin errores | **PASS** | `npm run lint` → "eslint: No issues found" |
+| `npm run build` compila sin errores | **PASS** | `npm run build` → "✓ Compiled successfully", TypeScript en 1429ms, 4/4 páginas estáticas generadas |
+| 13 hrefs apuntan a rutas inglesas | **PASS** | `grep -r "href=" components/` confirma los 13 hrefs en inglés: `Sidebar.tsx` (4: `/posts/new`, `/children`, `/announcements`, `/account`), `BottomNav.tsx` (4: `/children`, `/posts/new`, `/announcements`, `/account`), `TopBar.tsx` (1: `/account`), `ComposerTrigger.tsx` (1: `/posts/new`), `PostActions.tsx` (2: `/posts/${postId}`, `/posts/new`), `PhotoPlaceholder.tsx` (1: `/photo`). Snapshot DOM en `.playwright-mcp/spec-02-links.json` confirma los hrefs en el HTML renderizado. |
+| Grep rutas españolas → 0 en código | **PASS** | `rg "/(ninos\|avisos\|mi-cuenta\|crear-publicacion\|detalle-publicacion\|foto\|agregar-nino\|perfil-nino\|resumen-dia\|vincular-padre\|activar-cuenta\|familia)"` en `app/`, `components/`, `lib/` → 0 resultados. Los únicos matches están en `specs/` (documentación, no código). |
+| `specs/01-feed-home.md` sin contradicciones | **PASS** | Tabla de mapeo con rutas inglesas (§Data model). Convenciones actualizadas con referencia a SPEC 02. Decisión "URLs en inglés (reversión…)" añadida en §Decisions (línea 132). Implementation plan paso 7 → `/posts/new`. Acceptance criteria móvil → `/account`, `/posts/new`. Verification report del spec 01 intacto (evidencia histórica). |
+| `AGENTS.md` documenta convención de URLs | **PASS** | Línea en §Reglas de codificacion: "Las URLs y rutas van siempre en inglés (identificadores de infraestructura); los textos de UI y los datos quedan en español. Tabla canónica de mapeo template → ruta: `specs/02-english-routes.md`" |
+| Home `/` sin cambios visuales | **PASS** | Screenshots `.playwright-mcp/spec-02-desktop-1440x900.png` (desktop) y `.playwright-mcp/spec-02-mobile-390x844.png` (móvil) confirmando layout idéntico al spec 01: sidebar 248px, saludo, composer, divisor "PUBLICADO HOY", 3 posts con badges y contadores 3/1, 5/2, 8/0. Bottom nav en móvil con 5 ítems. Console errors: 0. Los únicos cambios son los hrefs en los `<a>`. |
+
+### Arreglos menores aplicados durante la verificación
+
+- Ninguno. Todos los criterios pasan sin necesidad de correcciones.
+
+### Desviaciones del scope
+
+- Ninguna. La implementación coincide con el scope definido.
