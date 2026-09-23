@@ -1,6 +1,6 @@
 # SPEC 05 — Modal Agregar niño en /children
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 02, SPEC 03
 > **Date:** 2026-09-23
 > **Objective:** Implementar el alta de niño (`agregar-nino.dc.html`) como un modal estático sobre `/children` — el botón "Agregar niño" lo abre en lugar de navegar a `/children/new` — cerrable por Cancelar/Esc/scrim/Guardar, pixel-perfect al template y adaptado a móvil.
@@ -52,19 +52,19 @@ Esta feature no introduce estructuras de datos nuevas. Es un mock estático: los
 
 ## Acceptance criteria
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] `/children` con el modal cerrado es idéntico al screenshot del SPEC 03 (el botón pasa de `<a>` a `<button>` sin cambio visual).
-- [ ] Click en "Agregar niño" abre el modal sin navegación; en ≥1024px es pixel-perfect a `agregar-nino.dc.html` (card 520px `#FBF4EC`, header Cancelar/Agregar niño/Guardar, 5 campos con labels y placeholders exactos, SALA caja estática "Soles" con chevron).
-- [ ] Scrim `rgba(63,54,46,.45)` visible; click en el scrim cierra el modal.
-- [ ] Cancelar, Esc y Guardar cierran el modal; Guardar no produce ningún efecto (sin navegación ni cambios en la grilla).
-- [ ] Al abrir, el foco queda en el primer input; al cerrar, vuelve al botón "Agregar niño".
-- [ ] Con el modal abierto, el fondo queda inerte y sin scroll; el modal queda por encima de la bottom nav en móvil.
-- [ ] En <1024px: card centrada con márgenes, scroll interno si no cabe, sin overflow horizontal.
-- [ ] `AddChildDialog.tsx` es el único `"use client"` nuevo; `app/children/page.tsx` sigue siendo server component.
-- [ ] SPEC 02 y SPEC 03 actualizados in place sin contradicciones; verification reports intactos.
-- [ ] El único resto de `/children/new` en `app/` y `components/` es el botón "Editar" del perfil (pendiente de su spec).
-- [ ] Screenshots en `.playwright-mcp/` comparados contra el template.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] `/children` con el modal cerrado es idéntico al screenshot del SPEC 03 (el botón pasa de `<a>` a `<button>` sin cambio visual).
+- [x] Click en "Agregar niño" abre el modal sin navegación; en ≥1024px es pixel-perfect a `agregar-nino.dc.html` (card 520px `#FBF4EC`, header Cancelar/Agregar niño/Guardar, 5 campos con labels y placeholders exactos, SALA caja estática "Soles" con chevron).
+- [x] Scrim `rgba(63,54,46,.45)` visible; click en el scrim cierra el modal.
+- [x] Cancelar, Esc y Guardar cierran el modal; Guardar no produce ningún efecto (sin navegación ni cambios en la grilla).
+- [x] Al abrir, el foco queda en el primer input; al cerrar, vuelve al botón "Agregar niño".
+- [x] Con el modal abierto, el fondo queda inerte y sin scroll; el modal queda por encima de la bottom nav en móvil.
+- [x] En <1024px: card centrada con márgenes, scroll interno si no cabe, sin overflow horizontal.
+- [x] `AddChildDialog.tsx` es el único `"use client"` nuevo; `app/children/page.tsx` sigue siendo server component.
+- [x] SPEC 02 y SPEC 03 actualizados in place sin contradicciones; verification reports intactos.
+- [x] El único resto de `/children/new` en `app/` y `components/` es el botón "Editar" del perfil (pendiente de su spec).
+- [x] Screenshots en `.playwright-mcp/` comparados contra el template.
 
 ## Decisions
 
@@ -102,3 +102,31 @@ Esta feature no introduce estructuras de datos nuevas. Es un mock estático: los
 - Layout tablet, dark mode.
 
 Cada una de esas, si llega, va en su propio spec.
+
+## Verification report
+
+**Fecha:** 2026-09-23 · **Branch:** `spec-05-add-child-modal` · **Spec:** SPEC 05 — Modal Agregar niño en /children
+
+| Criterio | Resultado | Evidencia |
+|---|---|---|
+| `npm run lint` pasa | **PASS** | Salida de `npm run lint`: 0 errores. |
+| `npm run build` compila | **PASS** | Salida de `npm run build`: `✓ Compiled successfully`, TypeScript finalizado, 15 páginas generadas. |
+| `/children` cerrado idéntico al SPEC 03 | **PASS** | Screenshot `.playwright-mcp/spec-05-children-closed-desktop-1440x900.png` y `.playwright-mcp/verify-children-closed-desktop.png` — botón "Agregar niño" con gradiente, sombra e ícono `Plus` idénticos al `<a>` del SPEC 03. |
+| Modal pixel-perfect desktop | **PASS** | Screenshot `.playwright-mcp/spec-05-modal-open-desktop-1440x900.png` comparado contra `references/pantallas/agregar-nino.dc.html`: card 520px `#FBF4EC`, border `#ECE0D0`, radius 24px, sombra, header (Cancelar/Agregar niño/Guardar con pesos y colores correctos), 5 campos con labels y placeholders exactos, SALA "Soles" + `ChevronDown`. |
+| Scrim visible; click cierra | **PASS** | `dialog::backdrop { background: rgba(63, 54, 46, 0.45) }` en `globals.css`. Click en scrim vía `dialog.click()` → `dialog.open === false`. |
+| Cancelar, Esc, Guardar cierran sin efectos | **PASS** | Cancelar: `dialog.open === false`. Esc: `dialog.open === false`. Guardar: `dialog.open === false`, URL permanece `/children` (sin navegación). |
+| Foco: primer input al abrir, trigger al cerrar | **PASS** | `page.evaluate` → al abrir: `focusedAfterOpen = "INPUT Ej. Martina López"`; al cerrar: `focusedAfterClose = "BUTTON Agregar niño"`. |
+| Fondo inerte + sin scroll; modal sobre bottom nav | **PASS** | `page.evaluate` → `bodyOverflow = "hidden"`. Screenshot móvil confirma modal por encima de la bottom nav. |
+| <1024px: card centrada, márgenes, scroll interno | **PASS** | Screenshot `.playwright-mcp/spec-05-modal-open-mobile-390x844.png` — card centrada con márgenes laterales, `max-h-[calc(100vh-2rem)] overflow-y-auto`, sin overflow horizontal. |
+| Único `"use client"` nuevo; `children/page.tsx` server | **PASS** | `AddChildDialog.tsx` línea 1: `"use client"`. `children/page.tsx` sin `"use client"`, solo imports + JSX. |
+| SPEC 02/03 actualizados in place | **PASS** | SPEC 02 línea 46: `agregar-nino.dc.html → modal en /children`. SPEC 03 línea 82: referencia al modal. Verification reports intactos en ambos. |
+| `/children/new` solo en "Editar" del perfil | **PASS** | `rg "children/new" app/ components/` → 1 match: `ChildProfileHeader.tsx:25 href="/children/new"`. |
+| Screenshots en `.playwright-mcp/` | **PASS** | 4 screenshots existentes: `spec-05-modal-open-desktop-1440x900.png`, `spec-05-modal-open-mobile-390x844.png`, `spec-05-children-closed-desktop-1440x900.png`, `spec-05-regression-home-1440x900.png`. Comparación visual contra template: fidelidad total. |
+
+**Arreglos menores aplicados:** ninguno — todos los criterios pasaron en el primer intento.
+
+**Arreglos mayores pendientes:** ninguno.
+
+**Notas:**
+- No se inició un nuevo dev server (ya estaba corriendo en `localhost:3000`).
+- Console errors esperados por rutas `/children/new`, `/posts/new`, etc. que retornan 404 (no son errores de la feature; están out of scope).
