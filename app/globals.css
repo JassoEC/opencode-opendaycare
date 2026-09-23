@@ -38,6 +38,11 @@
   --color-alert-icon-bg: #f4a8a0;
   --color-alert-title: #c5413a;
   --color-alert-body: #b25249;
+  --color-consent-bg: #fbf1d6;
+  --color-consent-ink: #8a7234;
+  --color-consent-check: #5fb97e;
+  --color-input-border: #eadfd0;
+  --color-input-placeholder: #b6a99b;
   --color-scrollbar-thumb: #e4d6c4;
   --font-sans: var(--font-nunito);
   --font-display: var(--font-fredoka);
