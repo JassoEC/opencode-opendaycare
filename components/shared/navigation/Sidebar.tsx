@@ -2,9 +2,14 @@ import Link from "next/link";
 import { Avatar } from "@/components/shared/Avatar";
 import { Bell, Home, Kids, LogOut, Plus, SunLogo, User } from "@/components/shared/icons";
 import { SidebarLink } from "@/components/shared/navigation/SidebarLink";
+import type { NavItem } from "@/components/shared/navigation/nav-item";
 import { classroom, currentUser } from "@/lib/feed-data";
 
-export function Sidebar() {
+interface SidebarProps {
+  active: NavItem;
+}
+
+export function Sidebar({ active }: SidebarProps) {
   const userAvatar = {
     kind: "initial" as const,
     initial: currentUser.initial,
@@ -42,10 +47,10 @@ export function Sidebar() {
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">
-        <SidebarLink href="/" label="Feed" icon={<Home />} active />
-        <SidebarLink href="/children" label="Niños" icon={<Kids />} />
-        <SidebarLink href="/announcements" label="Avisos" icon={<Bell />} />
-        <SidebarLink href="/account" label="Mi cuenta" icon={<User />} />
+        <SidebarLink href="/" label="Feed" icon={<Home />} active={active === "feed"} />
+        <SidebarLink href="/children" label="Niños" icon={<Kids />} active={active === "children"} />
+        <SidebarLink href="/announcements" label="Avisos" icon={<Bell />} active={active === "announcements"} />
+        <SidebarLink href="/account" label="Mi cuenta" icon={<User />} active={active === "account"} />
       </nav>
 
       <div className="mt-2.5 border-t border-border pt-[14px]">
