@@ -47,5 +47,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Reglas de codificacion
 - Usa clean code de forma estricta, lo que significa que los nombres de variables, funciones, tipos, etc, deben estar en ingles
+- Las URLs y rutas van siempre en inglés (identificadores de infraestructura); los textos de UI y los datos quedan en español. Tabla canónica de mapeo template → ruta: `specs/02-english-routes.md`
 
 - importante No hacer commits si no se piden explicitamente
