@@ -1,6 +1,6 @@
 # SPEC 04 — Login y activación de cuenta (/login y /activate-account)
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 01, SPEC 02
 > **Date:** 2026-09-23
 > **Objective:** Implementar `/login` (sin el selector de rol Personal/Familia) y `/activate-account` como pantallas standalone de maqueta estática 100% server, fieles a sus templates y adaptadas a móvil.
@@ -13,10 +13,10 @@ El botón de logout del Sidebar ya apunta a `/login` (SPEC 01) y hoy da 404: est
 
 **In:**
 
-- Página `/login` (`app/login/page.tsx`) que replica pixel-perfect `login.dc.html` en ≥1024px, **excluyendo la sección "INGRESO COMO"** (botones Personal/Familia) por decisión del usuario:
+- Página `/login` (`app/(auth)/login/page.tsx`) que replica pixel-perfect `login.dc.html` en ≥1024px, **excluyendo la sección "INGRESO COMO"** (botones Personal/Familia) por decisión del usuario:
   - Panel de marca izquierdo: degradado `linear-gradient(155deg,#F6A98E,#F2937A,#EC7E62)` (inline), círculos blancos translúcidos (420px `rgba(255,255,255,.12)` arriba-derecha, 300px `.10` abajo-izquierda), logo sol + "OpenDayCare" (Fredoka 600 21px), titular "El día de cada niño, compartido con su familia." (Fredoka 600 42px), subtítulo "Publicá momentos, gestioná las salas y mantené a las familias cerca, desde un solo lugar." y footer "🌿 Guardería Sala Soles".
   - Columna derecha (max-width 392px): h2 "Iniciar sesión", "Ingresá para ver el día de hoy.", EMAIL con valor `caro@opendaycare.com`, CONTRASEÑA con placeholder "••••••••", span "¿Olvidaste tu contraseña?" (no navegable), botón gradiente `180deg #F4977E→#EE8164` "Iniciar sesión" → `/`, y "¿Te invitó la guardería? **Activá tu cuenta**" → `/activate-account`.
-- Página `/activate-account` (`app/activate-account/page.tsx`) que replica pixel-perfect `activar-cuenta.dc.html` (columna centrada, max-width 440px):
+- Página `/activate-account` (`app/(auth)/activate-account/page.tsx`) que replica pixel-perfect `activar-cuenta.dc.html` (columna centrada, max-width 440px):
   - Tile 58px con degradado `155deg #F8C3A8→#F2937A` + logo sol, h1 "Bienvenida a OpenDayCare", subtítulo "Te invitaron a seguir el día de tu hijo. Creá tu contraseña para activar la cuenta."
   - Card blanca "Te invitaron a seguir a **Mateo · Sala Soles**" con avatar M (`#A9D9E8`/`#1F7A93`).
   - CÓDIGO DE INVITACIÓN con valor "7K4P9" (Fredoka 18px, weight 700, letter-spacing 3px), EMAIL `lucia.fernandez@gmail.com`, CREAR CONTRASEÑA (type password, border `#F2A78E` tal cual el template).
@@ -88,16 +88,16 @@ Reglas derivadas:
 
 ## Acceptance criteria
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] En ≥1024px, `/login` es idéntico a `login.dc.html` excepto la sección "INGRESO COMO" (ausente): panel coral con degradado 155deg, círculos translúcidos, "OpenDayCare", titular "El día de cada niño, compartido con su familia.", footer "🌿 Guardería Sala Soles"; form con "Iniciar sesión", EMAIL `caro@opendaycare.com`, CONTRASEÑA con placeholder "••••••••", span "¿Olvidaste tu contraseña?", botón "Iniciar sesión" → `/` y "Activá tu cuenta" → `/activate-account`.
-- [ ] En ≥1024px, `/activate-account` es idéntico a `activar-cuenta.dc.html`: tile degradado, "Bienvenida a OpenDayCare", card "Te invitaron a seguir a Mateo · Sala Soles" (avatar M), código "7K4P9", email `lucia.fernandez@gmail.com`, CREAR CONTRASEÑA (border `#F2A78E`), checkbox de autorización pre-checkeada, botón "Activar mi cuenta" → `/` y "Iniciar sesión" → `/login`.
-- [ ] Ninguna de las dos páginas renderiza sidebar, top bar ni bottom nav.
-- [ ] En <1024px: `/login` oculta el panel de marca (solo form centrado, sin overflow) y `/activate-account` queda en columna única con padding correcto.
-- [ ] Ambas páginas son 100% server components (sin `"use client"` en la feature).
-- [ ] Grep de "INGRESO COMO" y botones de rol en `app/login/` y `components/auth/` → 0 resultados.
-- [ ] El logout del Sidebar navega a `/login` real (ya no 404).
-- [ ] Screenshots desktop y móvil de ambas páginas guardados en `.playwright-mcp/` y comparados contra los templates.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] En ≥1024px, `/login` es idéntico a `login.dc.html` excepto la sección "INGRESO COMO" (ausente): panel coral con degradado 155deg, círculos translúcidos, "OpenDayCare", titular "El día de cada niño, compartido con su familia.", footer "🌿 Guardería Sala Soles"; form con "Iniciar sesión", EMAIL `caro@opendaycare.com`, CONTRASEÑA con placeholder "••••••••", span "¿Olvidaste tu contraseña?", botón "Iniciar sesión" → `/` y "Activá tu cuenta" → `/activate-account`.
+- [x] En ≥1024px, `/activate-account` es idéntico a `activar-cuenta.dc.html`: tile degradado, "Bienvenida a OpenDayCare", card "Te invitaron a seguir a Mateo · Sala Soles" (avatar M), código "7K4P9", email `lucia.fernandez@gmail.com`, CREAR CONTRASEÑA (border `#F2A78E`), checkbox de autorización pre-checkeada, botón "Activar mi cuenta" → `/` y "Iniciar sesión" → `/login`.
+- [x] Ninguna de las dos páginas renderiza sidebar, top bar ni bottom nav.
+- [x] En <1024px: `/login` oculta el panel de marca (solo form centrado, sin overflow) y `/activate-account` queda en columna única con padding correcto.
+- [x] Ambas páginas son 100% server components (sin `"use client"` en la feature).
+- [x] Grep de "INGRESO COMO" y botones de rol en `app/(auth)/login/` y `components/auth/` → 0 resultados.
+- [x] El logout del Sidebar navega a `/login` real (ya no 404).
+- [x] Screenshots desktop y móvil de ambas páginas guardados en `.playwright-mcp/` y comparados contra los templates.
 
 ## Decisions
 
@@ -135,3 +135,40 @@ Reglas derivadas:
 - Layout tablet, dark mode.
 
 Cada una de esas, si llega, va en su propio spec.
+
+## Verification report
+
+**Fecha:** 2026-09-23
+**Branch:** `spec-04-login-and-activate-account`
+**Spec verificado:** `specs/04-login-and-activate-account.md`
+
+| Criterio | Resultado | Evidencia |
+| --- | --- | --- |
+| `npm run lint` pasa | **PASS** | `npm run lint` → salida `> eslint` sin errores |
+| `npm run build` compila | **PASS** | `npm run build` → `✓ Compiled successfully`, `✓ Generating static pages (15/15)`, rutas `/login` y `/activate-account` listadas |
+| `/login` ≥1024px pixel-perfect vs template | **PASS** | Screenshot `.playwright-mcp/spec-04-login-desktop-1440x900.png`; snapshot confirma: BrandPanel con degradado 155deg, círculos 420px/300px, OpenDayCare 21px, titular 42px, footer 🌿; form con EMAIL `caro@opendaycare.com`, CONTRASEÑA placeholder `••••••••`, span "¿Olvidaste tu contraseña?", botón → `/`, link → `/activate-account` |
+| `/activate-account` ≥1024px pixel-perfect vs template | **PASS** | Screenshot `.playwright-mcp/spec-04-activate-desktop-1440x900.png`; snapshot confirma: tile 58px gradiente + SunLogo, h1 "Bienvenida a OpenDayCare", card "Mateo · Sala Soles" avatar M, código "7K4P9", email `lucia.fernandez@gmail.com`, CREAR CONTRASEÑA border `#F2A78E`, checkbox consent pre-checkeada, botón → `/`, link → `/login` |
+| Sin sidebar/top bar/bottom nav | **PASS** | Snapshots de ambas páginas: solo `<main>` y `<aside>` (BrandPanel), ningún elemento de navegación |
+| Responsive <1024px | **PASS** | Screenshots `.playwright-mcp/spec-04-login-mobile-390x844.png` (BrandPanel oculto, form centrado) y `.playwright-mcp/spec-04-activate-mobile-390x844.png` (columna única, padding correcto, sin overflow) |
+| 100% server components | **PASS** | Grep de `"use client"` en `app/(auth)/login/`, `app/(auth)/activate-account/`, `components/auth/` → 0 resultados |
+| Grep "INGRESO COMO" → 0 | **PASS** | `grep -rn "INGRESO COMO" app/(auth)/login/ components/auth/` → sin coincidencias |
+| Logout Sidebar → `/login` (no 404) | **PASS** | `Sidebar.tsx` línea 64: `href="/login"`; verificado en desktop: link "Cerrar sesión" navega a `/login`; build incluye `/login` como ruta estática |
+| Screenshots en `.playwright-mcp/` | **PASS** | Archivos creados: `spec-04-login-desktop-1440x900.png`, `spec-04-login-mobile-390x844.png`, `spec-04-activate-desktop-1440x900.png`, `spec-04-activate-mobile-390x844.png` |
+
+**Fallos menores corregidos:** ninguno.
+**Fallos mayores pendientes:** ninguno.
+
+> **Nota post-verificación (2026-09-23):** las rutas se movieron a un route group `app/(auth)/` por práctica de Next.js. `app/login/` → `app/(auth)/login/` y `app/activate-account/` → `app/(auth)/activate-account/`. El grupo solo organiza carpetas y **no** altera las URLs (`/login` y `/activate-account` se mantienen), así que cumplen sin cambios los criterios de la tabla. No se agregó `app/(auth)/layout.tsx` (el root layout aplica; no hay nada compartido que extraer).
+
+**Archivos verificados:**
+- `app/(auth)/login/page.tsx` — grid `lg:grid-cols-[1.05fr_1fr]`, metadata title correcto
+- `app/(auth)/activate-account/page.tsx` — columna centrada max-w 440px, metadata title correcto
+- `components/auth/AuthField.tsx` — label eyebrow + input, variante `code`, `borderAccent`
+- `components/auth/BrandPanel.tsx` — degradado inline, círculos absolutos, marca
+- `components/auth/LoginForm.tsx` — campos con `loginDemo.email`, links `<Link>`
+- `components/auth/InvitationCard.tsx` — avatar + texto de `invitation`
+- `components/auth/ConsentCheckbox.tsx` — caja `#FBF1D6` con check `#5FB97E`
+- `lib/auth-data.ts` — `loginDemo`, `Invitation`, `invitation`
+- `components/shared/icons.tsx` — ícono `Check` añadido
+- `app/globals.css` — tokens `consent-*`, `input-border`, `input-placeholder`
+- `components/shared/navigation/Sidebar.tsx` — logout `href="/login"`
