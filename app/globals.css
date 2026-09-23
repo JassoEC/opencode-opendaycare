@@ -3,6 +3,7 @@
 @theme inline {
   --color-background: #f6ecdf;
   --color-surface: #fffdf9;
+  --color-surface-modal: #fbf4ec;
   --color-ink: #3f362e;
   --color-ink-body: #4a4038;
   --color-ink-muted: #94887b;
@@ -68,6 +69,10 @@ body {
 
 input {
   padding: 1px 2px;
+}
+
+dialog::backdrop {
+  background: rgba(63, 54, 46, 0.45);
 }
 
 @layer base {
