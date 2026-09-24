@@ -45,7 +45,7 @@ Sin datos nuevos. Tabla canónica de mapeo (fuente de verdad para todos los spec
 | `perfil-nino.dc.html` | `/children/[childId]` |
 | `agregar-nino.dc.html` | modal en `/children` (sin ruta, ver SPEC 05) |
 | `resumen-dia.dc.html` | `/children/[childId]/daily-summary` |
-| `vincular-padre.dc.html` | `/children/[childId]/link-parent` |
+| `vincular-padre.dc.html` | modal en `/children/[childId]` (sin ruta, ver SPEC 06) |
 | `avisos.dc.html` | `/announcements` |
 | `mi-cuenta.dc.html` | `/account` |
 | `crear-publicacion.dc.html` | `/posts/new` |
