@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Plus } from "@/components/shared/icons";
+import { LinkParentDialog } from "@/components/children/LinkParentDialog";
 import type { Child } from "@/lib/children-data";
 
 interface ParentsCardProps {
@@ -38,14 +37,7 @@ export function ParentsCard({ child }: ParentsCardProps) {
             )}
           </div>
         ))}
-        <Link href={`/children/${child.id}/link-parent`} className="flex items-center gap-3 pt-2">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-placeholder-ink">
-            <Plus />
-          </span>
-          <span className="text-[14.5px] font-extrabold text-brand-dark">
-            Vincular otro padre
-          </span>
-        </Link>
+        <LinkParentDialog child={child} />
       </div>
     </div>
   );
